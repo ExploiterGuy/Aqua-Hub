@@ -1,0 +1,146 @@
+local UILibrary = {}
+
+function UILibrary:CreateUI(parent, name)
+    -- Instances:
+    local SlingshotRaceSimulator = Instance.new("ScreenGui")
+    local ImageLabel = Instance.new("ImageLabel")
+    local Container = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local ContainerList = Instance.new("ScrollingFrame")
+    local UIListLayout = Instance.new("UIListLayout")
+    local UIPadding = Instance.new("UIPadding")
+
+    -- Properties:
+    SlingshotRaceSimulator.Name = name or "Slingshot Race Simulator"
+    SlingshotRaceSimulator.Parent = parent or game.CoreGui
+
+    ImageLabel.Parent = SlingshotRaceSimulator
+    ImageLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ImageLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ImageLabel.BorderSizePixel = 0
+    ImageLabel.Position = UDim2.new(0.391, 0, 0.242, 0)
+    ImageLabel.Size = UDim2.new(0, 210, 0, 276)
+    ImageLabel.Image = "rbxassetid://72711891389790"
+    ImageLabel.ImageColor3 = Color3.fromRGB(80, 80, 80)
+
+    Container.Name = "Container"
+    Container.Parent = ImageLabel
+    Container.BackgroundColor3 = Color3.fromRGB(143, 143, 143)
+    Container.BackgroundTransparency = 0.5
+    Container.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Container.Size = UDim2.new(0, 210, 0, 241)
+
+    UICorner.Parent = Container
+
+    ContainerList.Name = "ContainerList"
+    ContainerList.Parent = Container
+    ContainerList.Active = true
+    ContainerList.BackgroundTransparency = 1.0
+    ContainerList.Size = UDim2.new(0, 210, 0, 219)
+    ContainerList.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+
+    UIListLayout.Parent = ContainerList
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 3)
+
+    UIPadding.Parent = ContainerList
+    UIPadding.PaddingLeft = UDim.new(0, 16)
+    UIPadding.PaddingTop = UDim.new(0, 5)
+
+    return {
+        ScreenGui = SlingshotRaceSimulator,
+        ContainerList = ContainerList
+    }
+end
+
+function UILibrary:AddButton(container, text, callback)
+    local Win = Instance.new("Frame")
+    local UICorner_2 = Instance.new("UICorner")
+    local Trigger = Instance.new("TextButton")
+    local TextLabel = Instance.new("TextLabel")
+
+    Win.Name = "Win"
+    Win.Parent = container
+    Win.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+    Win.BackgroundTransparency = 0.5
+    Win.Size = UDim2.new(0, 176, 0, 38)
+
+    UICorner_2.Parent = Win
+
+    Trigger.Name = "Trigger"
+    Trigger.Parent = Win
+    Trigger.BackgroundTransparency = 1.0
+    Trigger.Size = UDim2.new(1, 0, 1, 0)
+    Trigger.Text = ""
+    Trigger.MouseButton1Click:Connect(callback)
+
+    TextLabel.Parent = Win
+    TextLabel.BackgroundTransparency = 1.0
+    TextLabel.Size = UDim2.new(0.8, 0, 1, 0)
+    TextLabel.Position = UDim2.new(0.1, 0, 0, 0)
+    TextLabel.Font = Enum.Font.Jura
+    TextLabel.Text = text
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 20
+    TextLabel.TextWrapped = true
+
+    return Win
+end
+
+function UILibrary:AddToggle(container, text, callback)
+    local Toggle = Instance.new("Frame")
+    local UICorner = Instance.new("UICorner")
+    local Trigger = Instance.new("TextButton")
+    local TextLabel = Instance.new("TextLabel")
+    local In = Instance.new("Frame")
+    local Frame = Instance.new("Frame")
+
+    Toggle.Name = "Toggle"
+    Toggle.Parent = container
+    Toggle.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+    Toggle.BackgroundTransparency = 0.5
+    Toggle.Size = UDim2.new(0, 176, 0, 38)
+
+    UICorner.Parent = Toggle
+
+    Trigger.Name = "Trigger"
+    Trigger.Parent = Toggle
+    Trigger.BackgroundTransparency = 1.0
+    Trigger.Size = UDim2.new(1, 0, 1, 0)
+    Trigger.Text = ""
+
+    TextLabel.Parent = Toggle
+    TextLabel.BackgroundTransparency = 1.0
+    TextLabel.Size = UDim2.new(0.8, 0, 1, 0)
+    TextLabel.Position = UDim2.new(0.1, 0, 0, 0)
+    TextLabel.Font = Enum.Font.Jura
+    TextLabel.Text = text
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.TextSize = 20
+    TextLabel.TextWrapped = true
+
+    In.Parent = Toggle
+    In.BackgroundColor3 = Color3.fromRGB(61, 61, 61)
+    In.Size = UDim2.new(0, 35, 0, 20)
+    In.Position = UDim2.new(0.85, 0, 0.5, -10)
+
+    Frame.Parent = In
+    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.Size = UDim2.new(0, 19, 0, 20)
+
+    local toggled = false
+    Trigger.MouseButton1Click:Connect(function()
+        toggled = not toggled
+        if toggled then
+            Frame.Position = UDim2.new(0.5, 0, 0, 0)
+            callback(true)
+        else
+            Frame.Position = UDim2.new(0, 0, 0, 0)
+            callback(false)
+        end
+    end)
+
+    return Toggle
+end
+
+return UILibrary
